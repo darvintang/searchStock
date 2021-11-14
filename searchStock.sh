@@ -110,6 +110,10 @@ inputInterval
 
 read -p '请敲回车开始查询' temp
 
+for user in $(echo $toUser);do
+	osascript ./sendMessage.scpt "$user" "开始查询Apple线下库存"
+done
+
 url="https://www.apple.com.cn/shop/fulfillment-messages?$parts&location=$location&mt=regular"
 jqpath=$shellPath/jq
 
