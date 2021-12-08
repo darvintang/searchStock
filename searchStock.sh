@@ -23,7 +23,7 @@ for key in ${!modelDict[*]};do
 	model=${modelDict[$key]}
 	modelInfoPath=$infoPath/$(echo ${model/\//_}).txt
 	modelInfo=${nameDict[$key]}
-	touch $modelInfoPath 
+	touch $modelInfoPath
 	echo $modelInfo>$modelInfoPath
 	echo "编号: $key 配置: ${nameDict[$key]}"
 done
@@ -143,17 +143,16 @@ while true ; do
 			partsAvailability=$(echo ${partsAvailability/\//_})
 			for model in ${deviceModels[*]}; do
 				enabled=$(echo $partsAvailability | $jqpath ".$model.storeSelectionEnabled")
-				if [ $enabled ]; then
+				if [ "$enabled" == 'true' ]; then
 					if [[ "$storeName" == `echo $city`* ]]; then
 						storeName=`echo $storeName`
 					else
 						storeName=`echo "$city$storeName"`
 					fi
-					
 					touch $tempPath/$model.txt
 					content=$(echo "`cat $tempPath/$model.txt` $storeName")
 					echo $content>$tempPath/$model.txt
-					
+
 					if [[ $pickLocation == *`echo $city`* ]]; then
 						touch $stockPath/$model.txt
 						content=$(echo "`cat $stockPath/$model.txt` $storeName")
@@ -163,7 +162,7 @@ while true ; do
 			done
 		fi
 	done
-	
+
 	for model in ${deviceModels[*]}; do
 		touch $stockPath/$model.txt
 		touch $infoPath/$model.txt
@@ -172,16 +171,16 @@ while true ; do
 		stores=`cat $tempPath/$model.txt`
 		stocks=`cat $stockPath/$model.txt`
 		echo "$name 在 $stores 有货"
-		
+
 		if [[ ${#stocks} > 0 ]];then
 			message=$(echo "通知: $stocks $name 可取货")
 			echo $message
 			for user in $(echo $toUser);do
 				osascript ./sendMessage.scpt "$user" "通知: $stocks $name 可取货"
 			done
-			
+
 		fi
 	done
-	
+
 	sleep $interval
 done
