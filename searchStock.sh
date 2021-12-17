@@ -167,10 +167,11 @@ while true ; do
 		touch $stockPath/$model.txt
 		touch $infoPath/$model.txt
 		touch $tempPath/$model.txt
+		
 		name=`cat $infoPath/$model.txt`
 		stores=`cat $tempPath/$model.txt`
 		stocks=`cat $stockPath/$model.txt`
-		echo "$name 在 $stores 有货"
+		
 
 		if [[ ${#stocks} > 0 ]];then
 			message=$(echo "通知: $stocks $name 可取货")
@@ -178,7 +179,8 @@ while true ; do
 			for user in $(echo $toUser);do
 				osascript ./sendMessage.scpt "$user" "通知: $stocks $name 可取货"
 			done
-
+		else
+			echo "$name 暂时无货"
 		fi
 	done
 
