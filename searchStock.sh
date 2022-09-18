@@ -161,7 +161,7 @@ while true ; do
 			partsAvailability=$(echo $store | $jqpath ".partsAvailability")
 			partsAvailability=$(echo ${partsAvailability/\//_})
 			for model in ${deviceModels[*]}; do
-				enabled=$(echo $partsAvailability | $jqpath ".$model.storeSelectionEnabled")
+				enabled=$(echo $partsAvailability | $jqpath ".$model.messageTypes.regular.storeSelectionEnabled")
 				if [ "$enabled" == 'true' ]; then
 					if [[ "$storeName" == `echo $city`* ]]; then
 						storeName=`echo $storeName`
@@ -191,7 +191,6 @@ while true ; do
 		stores=`cat $tempPath/$model.txt`
 		stocks=`cat $stockPath/$model.txt`
 		
-
 		if [[ ${#stocks} > 0 ]];then
 			message=$(echo "通知: $stocks $name 可取货")
 			echo $message
